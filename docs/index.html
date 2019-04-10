@@ -32,20 +32,42 @@
     <h2 align="middle">Background and Problem Description</h2>
       <p>The phenomenon of fire, like most natural processes, can be complicated to describe and intricate geometrically. Thus, if one wants to
          render convincing looking fire on a computer graphics display, a non-trivial approach must be adopted. In general, fluid dynamics are described by the
-         Navier-Stokes equations. As analytically solving Navier-Stokes is intractable, numerical methods are generally used to intgrate the PDE.
+         Navier-Stokes equations. As analytically solving Navier-Stokes is intractable, numerical methods are generally used to integrate the PDE.
          We believe that similar techniques will need to be used for fire simulation, although the dynamics may be more complicated.
-         Additionally, a traditional mesh would be inefficient to modulate in time with the solutions of the NS, thus we must caste the solution
+         Additionally, a traditional mesh would be inefficient to modulate in time in accordance with the dynamics of the system, thus we must caste the solution
          into a more suitable framework.</p>
+         <p>As mentioned in the summary, we may try a different method to integrate the PDE governing the dynamics of the system. 
+           There are probabilistic models from statistical mechanics which are closely related to systems of interacting particles, 
+           such as ASEP (Asymmetric Simple Exclusion Process), that exhibit "universal" behavior in their 
+           thermodynamic limits. This, very roughly, means that the limiting dynamics of certain simple and solvable models
+          are closely related to the dynamics of much more complicated (intractable) models. Furthermore,
+          if we can find a model whose dynamics are governed by the same PDE as fire, then it is possible that by perturbing it slightly
+          and then simulating this perturbed model and rendering it in a certain way we could get something which looks a lot like fire.
+          This technique, although difficult, would very much be in the spirit of the course, as these models of statistical mechanics usually involve
+          a lattice that approximates a continuous domain in some scaling limit, which is very reminiscint of all of the techniques
+          used in graphics to approximate smooth surfaces and objects with discrete data.
+         </p>
 
       <h2 align="middle">Goals and Delivarbles</h2>
-        <p>Our central goal for the project is to create a realistic simulation of fire. We propose to first implement an engine to simulate the dynamics of combustion. We will investigate primarily 2, but possibly other
-           established techniques, to organize the framework to be rendered. We will numerically calculate the solutions to Navier-Stokes
-           equations, which describe the motion of gaseous densities, thus giving us a description of fire to frame into a rendering engine.
+        <p>Our central goal for the project is to create a very realistic simulation of fire. We propose to first implement an engine to simulate the dynamics of combustion.
+          We will investigate primarily 2, but possibly other,
+           established techniques of doing this. We will numerically calculate the solutions to PDEs 
+           which describe the motion of gaseous densities, thus giving us a description of fire to display with a rendering engine.
+           We expect that along the way we will generally be challenged to understand
+           the theoretical frameowork for modeling fire, and that also we will run into many difficulties related to 
+           the numerical integration of PDEs, as this is generally a very tricky thing to do.
            To measure the quality of the system we will observe the smoothness and fluidity of the simulation and compare it to real fire.
            Our base deliverable would be a simple video showing our simulation along with a high level overview of the math behind it,
-           as well as the essential aspects of our implementation. </p>
-        <p>We hope to create an applet with a simple user interface that can be used to display our simulation in an interactive way.
-           Other aspirations we have include implementing refraction from the heat on a background, and modeling the spread of fire so that
+           as well as the essential aspects of our implementation. We expect that obtaining a simulation that runs with 
+           reasonable efficiency will be a difficult task. If we can obtain something that can be rendered in real time, that would 
+           be a major success for the project.
+            
+           </p>
+        <p>If we are exceptionally fast, we hope to explore the probabilistic method. Also, we hope to try to
+           create an applet with a simple user interface that can be used to display our simulation in an interactive way.
+           We could have the user click the screen start a fire, and then they could watch it burn or maybe even (if we 
+           are even more ambitious) spread across a room.
+          Other aspirations we have include implementing refraction from the heat against a background, and modeling the spread of fire so that
            our simulation is not purely stationary.
 
         </p>
