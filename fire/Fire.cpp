@@ -4,11 +4,26 @@
 
 #include "Fire.h"
 
+Fire::Fire() {
+    N = 160;
+    h = 0.05; // (m) grid spacing
+    vMax = 30;  // (m/s) cap on velocity magnitude
+    dt = h / vMax / 2; // (s) size of time steps for front propagation. Fluids are updated with 5*dt
+    S = 0.1; // (m/s) Parameter controlling velocity of front propagation(Combustion/Reaction Rate)
+    Tair = 300; // (K) temperature of ambient environment
+    alpha = 0.15; // (m/Ks^2)positive constant
+    cT = 3000; // (K/s) Cooling constant
+    epsh = 60;
+    epsf = 16;
+    ph = 0.01; // (kg/m^3) density of the "hot products"
+    pf = 0.1; // (kg/m^3) density of the "fuel vapor"
+    k = 1; // constant for dY/dt (change in time since reaction {at a point in space} over change in time) thus unit-less
+    Tignition = 678; // (K) Temperature at ignition
+    Tmax = 2253;  // (K) Maximum temperature
 
+}
 
-
-
-void Fire::buildA(int N) {
+void Fire::buildA() {
     int m = N*N*N;
     p = VectorXd(m);
     A = SparseMatrix<double>(m,m);

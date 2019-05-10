@@ -21,17 +21,21 @@ using namespace std;
 
 
 class Fire {
+
+private:
     int N; // Size of grid: grid will be 4 by N by N by N (4 because we have 4 quantities to keep track of)
     double dt; // size of time steps
     double h; // grid spacing
     double S; // Parameter controlling velocity of front propagation(Combustion/Reaction Rate)
     double Tair; // temperature of ambient environment
-    double alpha; // positive constant
-    double eps;
+    double alpha; // Buoyancy force parameter
+    double cT; // Cooling constant
+    double epsh, epsf; // Vorticity confinement parameters for "hot products" & "fuel vapor" respectively
     double ph, pf; // density of the "hot products" & "fuel vapor" respectively
     double k; // constant for Y
     double Tignition; // Temperature at ignition
     double Tmax;  // maximum temperature
+    double vMax;  // cap on velocity magnitude
     vector<double> grid; // grid with implicit surface at current time step
     vector<array<double, 3>*> gridNorm; // The normalized gradient field of the grid at next time step
     // We define φ to be positive in the region of space filled with fuel, negative elsewhere and zero at the reaction zone.
@@ -59,8 +63,9 @@ class Fire {
     // temperatures
     vector<double> T;
 
+public:
+
     Fire();
-    Fire(double N=160, double h=0.05);
 
     void updateY();
 
@@ -84,7 +89,7 @@ class Fire {
 
     void updateVCenter();
 
-    void buildA(int N);
+    void buildA();
 
 };
 
