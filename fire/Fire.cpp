@@ -11,6 +11,7 @@
 
 void Fire::buildA(int N) {
     int m = N*N*N;
+    p = VectorXd(m);
     A = SparseMatrix<double>(m,m);
     typedef Triplet<double> T;
     vector<T> list;
@@ -127,7 +128,7 @@ Vector3d Fire::vort(int i, int j, int k) {
     return Vector3d(w1, w2, w3);
 }
 
-void Fire::advect(vector<double> &arr, vector<double> &arrOld) {
+void Fire::advect() {
 
     // solve advection
 
@@ -150,7 +151,10 @@ void Fire::advect(vector<double> &arr, vector<double> &arrOld) {
                 float dy = newJ - y;
                 float dz = newK - z;
 
-                arr[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, arrOld);
+                velNewX[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velX);
+                velNewY[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velY);
+                velNewZ[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velZ);
+                newY[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, Y);
 
             }
         }
@@ -180,7 +184,7 @@ double Fire::norm(double x, double y, double z) {
 
 void Fire::poissonPressure() {
     int m = N*N*N;
-    VectorXd x(m), b(m);
+    VectorXd b(m);
 
     double uGrad, C = ph*h/dt;
     int n;
@@ -212,7 +216,7 @@ void Fire::poissonPressure() {
 
     ConjugateGradient<SparseMatrix<double>, Lower|Upper, IncompleteCholesky<double, Lower|Upper>> cg;
     cg.compute(A);
-    x = cg.solve(b);
+    p = cg.solve(b);
     std::cout << "#iterations:     " << cg.iterations() << std::endl;
     std::cout << "estimated error: " << cg.error()      << std::endl;
 // update b, and solve again
