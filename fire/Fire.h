@@ -21,19 +21,21 @@ using namespace std;
 
 
 class Fire {
+public:
     int N; // Size of grid: grid will be 4 by N by N by N (4 because we have 4 quantities to keep track of)
     double dt; // size of time steps
+    double M;
     double h; // grid spacing
     double S; // Parameter controlling velocity of front propagation(Combustion/Reaction Rate)
     double Tair; // temperature of ambient environment
     double alpha; // positive constant
     double eps;
     double ph, pf; // density of the "hot products" & "fuel vapor" respectively
-    double k; // constant for Y
+    double k0; // constant for Y
     double Tignition; // Temperature at ignition
     double Tmax;  // maximum temperature
     vector<double> grid; // grid with implicit surface at current time step
-    vector<array<double, 3>*> gridNorm; // The normalized gradient field of the grid at next time step
+    vector<Vector3d*> gridNorm; // The normalized gradient field of the grid at next time step
     // We define φ to be positive in the region of space filled with fuel, negative elsewhere and zero at the reaction zone.
     vector<double> newGrid; // grid with implicit surface at next time step
     SparseMatrix<double> A;
@@ -45,6 +47,14 @@ class Fire {
     vector<double> velX; // array with x-coordinate of velocities defined across faces of 'grid'
     vector<double> velY; // array with y-coordinate of velocities defined across faces of 'grid'
     vector<double> velZ; // array with z-coordinate of velocities defined across faces of 'grid'
+
+    vector<double> velXhG; // x coordinate of h ghost velocities
+    vector<double> velYhG; // y coordinate of h ghost velocities
+    vector<double> velZhG; // z coordinate of h ghost velocities
+
+    vector<double> velXfG; // x coordinate of f ghost velocities
+    vector<double> velYfG; // y coordinate of f ghost velocities
+    vector<double> velZfG; // z coordinate of f ghost velocities
 
 
     // centered velocities
@@ -60,7 +70,7 @@ class Fire {
     vector<double> T;
 
     Fire();
-    Fire(double N=160, double h=0.05);
+//    Fire(double N=160, double h=0.05);
 
     void updateY();
 
@@ -84,8 +94,11 @@ class Fire {
 
     void updateVCenter();
 
-    void buildA(int N);
+    void buildA();
 
+    double hGhost(int i, int j, int k, int c);
+
+    double fGhost(int i, int j, int k, int c);
 };
 
 

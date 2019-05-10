@@ -5,304 +5,365 @@
 #include "Fire.h"
 
 
+    Fire::Fire() {}
 
 
+    double Fire::hGhost(int i, int j, int k, int c) {
+        Vector3d n = *(gridNorm[i*N*N + j*N + k]);
+        Vector3d v(velX[i*N*N + j*N + k], velY[i*N*N + j*N + k], velZ[i*N*N + j*N + k]);
 
-
-void Fire::buildA(int N) {
-    int m = N*N*N;
-    p = VectorXd(m);
-    A = SparseMatrix<double>(m,m);
-    typedef Triplet<double> T;
-    vector<T> list;
-    for (int idx = 0; idx < m; idx++) {
-        list.emplace_back(idx, idx, -6);
-        list.emplace_back(idx + 1,   idx,       1);
-        list.emplace_back(idx + N,   idx,       1);
-        list.emplace_back(idx + N*N, idx,       1);
-        list.emplace_back(idx,       idx + 1,   1);
-        list.emplace_back(idx,       idx + N,   1);
-        list.emplace_back(idx,       idx + N*N, 1);
+        return v(c) - M * (1 / ph - 1 / pf) * n(c);
     }
-    A.setFromTriplets(list.begin(), list.end());
+
+double Fire::fGhost(int i, int j, int k, int c) {
+    Vector3d n = *(gridNorm[i*N*N + j*N + k]);
+    Vector3d v(velX[i*N*N + j*N + k], velY[i*N*N + j*N + k], velZ[i*N*N + j*N + k]);
+
+    return v(c) + M * (1 / ph - 1 / pf) * n(c);
 }
 
 
+    void Fire::buildA() {
+        int m = N*N*N;
+        p = VectorXd(m);
+        A = SparseMatrix<double>(m,m);
+        typedef Triplet<double> T;
+        vector<T> list;
+        for (int i = 1; i < N - 1; i++) {
+            for (int j = 1; i < N - 1; j++) {
+                for (int k = 1; i < N - 1; k++) {
+                    int idx = i*N*N + j*N + k;
 
-void Fire::propagateFront() {
-    for (int i = 1; i <= N; i++) {
-        for (int j = 1; j <= N; j++) {
-            for (int k = 1; k <= N; k++) {
-                double nx, ny, nz;
-                // components of the gradient
-                nx = (grid[(i+1)*N*N + j*N     + k]   - grid[(i-1)*N*N + j*N     + k])   / (2*h);
-                ny = (grid[i*N*N     + (j+1)*N + k]   - grid[i*N*N     + (j-1)*N + k])   / (2*h);
-                nz = (grid[i*N*N     + j*N     + k+1] - grid[i*N*N     + j*N     + k-1]) / (2*h);
-                // components of normalized surface normal
-                double Norm = norm(nx, ny, nz);
-                double nnx = nx / Norm;
-                double nny = ny / Norm;
-                double nnz = nz / Norm;
-
-                *gridNorm[i*N*N + j*N + k] = {nnx, nny, nnz};
-
-                double w1, w2, w3;
-
-                //    // components of velocity
-                w1 = velCX[i * N * N + j * N + k] + S * nnx;
-                w2 = velCY[i * N * N + j * N + k] + S * nny;
-                w3 = velCZ[i * N * N + j * N + k] + S * nnz;
-
-                // upwind finite difference approximations for partial derivatives
-                double phix, phiy, phiz;
-
-                if (w1 > 0) {
-                    phix = (grid[i*N*N     + j*N     + k] - grid[(i-1)*N*N + j*N     + k]) / h;
-                } else {
-                    phix = (grid[(i+1)*N*N + j*N     + k] - grid[i*N*N     + j*N     + k]) / h;
+                    list.emplace_back(idx, idx, -6);
+                    list.emplace_back(idx + 1,   idx,       1);
+                    list.emplace_back(idx + N,   idx,       1);
+                    list.emplace_back(idx + N*N, idx,       1);
+                    list.emplace_back(idx,       idx + 1,   1);
+                    list.emplace_back(idx,       idx + N,   1);
+                    list.emplace_back(idx,       idx + N*N, 1);
                 }
-                if (w2 > 0) {
-                    phiy = (grid[i*N*N     + j*N     + k] - grid[i*N*N     + (j-1)*N + k]) / h;
-                } else {
-                    phiy = (grid[i*N*N     + (j+1)*N + k] - grid[i*N*N     + j*N     + k]) / h;
+            }
+        }
+
+        A.setFromTriplets(list.begin(), list.end());
+    }
+
+
+
+    void Fire::propagateFront() {
+        for (int i = 1; i < N; i++) {
+            for (int j = 1; j < N; j++) {
+                for (int k = 1; k < N; k++) {
+                    double nx, ny, nz;
+                    // components of the gradient
+                    nx = (grid[(i+1)*N*N + j*N     + k]   - grid[(i-1)*N*N + j*N     + k])   / (2*h);
+                    ny = (grid[i*N*N     + (j+1)*N + k]   - grid[i*N*N     + (j-1)*N + k])   / (2*h);
+                    nz = (grid[i*N*N     + j*N     + k+1] - grid[i*N*N     + j*N     + k-1]) / (2*h);
+                    // components of normalized surface normal
+                    double Norm = norm(nx, ny, nz);
+                    double nnx = nx / Norm;
+                    double nny = ny / Norm;
+                    double nnz = nz / Norm;
+
+                    Vector3d nhat;
+                    nhat(0) = nnx;
+                    nhat(1) = nny;
+                    nhat(2) = nnz;
+
+                    gridNorm[i*N*N + j*N + k] = &nhat;
+
+                    double w1, w2, w3;
+
+                    //    // components of velocity
+                    w1 = velCX[i * N * N + j * N + k] + S * nnx;
+                    w2 = velCY[i * N * N + j * N + k] + S * nny;
+                    w3 = velCZ[i * N * N + j * N + k] + S * nnz;
+
+                    // upwind finite difference approximations for partial derivatives
+                    double phix, phiy, phiz;
+
+                    if (w1 > 0) {
+                        phix = (grid[i*N*N     + j*N     + k] - grid[(i-1)*N*N + j*N     + k]) / h;
+                    } else {
+                        phix = (grid[(i+1)*N*N + j*N     + k] - grid[i*N*N     + j*N     + k]) / h;
+                    }
+                    if (w2 > 0) {
+                        phiy = (grid[i*N*N     + j*N     + k] - grid[i*N*N     + (j-1)*N + k]) / h;
+                    } else {
+                        phiy = (grid[i*N*N     + (j+1)*N + k] - grid[i*N*N     + j*N     + k]) / h;
+                    }
+                    if (w3 > 0) {
+                        phiz = (grid[i*N*N     + j*N     + k] - grid[i*N*N     + (j-1)*N + k]) / h;
+                    } else {
+                        phiz = (grid[i*N*N     + (j+1)*N + k] - grid[i*N*N     + j*N     + k]) / h;
+                    }
+
+
+                    // update implicit surface function
+                    newGrid[i*N*N + j*N + k] = grid[i*N*N + j*N + k]
+                                                      - dt * (w1 * phix + w2 * phiy + w3 * phiz);
+
+
+                    // update implicit surface equation
+
                 }
-                if (w3 > 0) {
-                    phiz = (grid[i*N*N     + j*N     + k] - grid[i*N*N     + (j-1)*N + k]) / h;
-                } else {
-                    phiz = (grid[i*N*N     + (j+1)*N + k] - grid[i*N*N     + j*N     + k]) / h;
+            }
+
+        }
+
+    }
+
+    void Fire::addForce() {
+        double fx, fy, fz, g;
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= N; j++) {
+                for (int k = 1; k <= N; k++) {
+                    // compute forces
+                    //gravity
+                    g = 9.81;
+                    // buoyancy
+                    fz = alpha * (grid[i*N*N + j*N + k] - Tair);
+                    // vorticity
+                    Vector3d wijk = vort(i, j, k);
+                    Vector3d n((vort(i+1, j,   k).norm()   - wijk.norm())/h,
+                               (vort(i,   j+1, k).norm()   - wijk.norm())/h,
+                               (vort(i,   j,   k+1).norm() - wijk.norm())/h);
+                    n.normalize();
+                    Vector3d fconf = eps * h * n.cross(wijk);
+                    fconf(2) += (fz + g);
+                    Vector3d f = fconf;
+
+                    // add in contribution to velocity
+                    velX[i*N*N + j*N + k] = velX[i*N*N + j*N + k] + dt*f(0);
+                    velY[i*N*N + j*N + k] = velY[i*N*N + j*N + k] + dt*f(1);
+                    velZ[i*N*N + j*N + k] = velZ[i*N*N + j*N + k] + dt*f(2);
                 }
-
-
-                // update implicit surface function
-                newGrid[i*N*N + j*N + k] = grid[i*N*N + j*N + k]
-                                                  - dt * (w1 * phix + w2 * phiy + w3 * phiz);
-
-
-                // update implicit surface equation
-
             }
         }
 
     }
 
-}
-
-void Fire::addForce() {
-    double fx, fy, fz, g;
-    for (int i = 1; i <= N; i++) {
-        for (int j = 1; j <= N; j++) {
-            for (int k = 1; k <= N; k++) {
-                // compute forces
-                //gravity
-                g = 9.81;
-                // buoyancy
-                fz = alpha * (grid[i*N*N + j*N + k] - Tair);
-                // vorticity
-                Vector3d wijk = vort(i, j, k);
-                Vector3d n((vort(i+1, j,   k).norm()   - wijk.norm())/h,
-                           (vort(i,   j+1, k).norm()   - wijk.norm())/h,
-                           (vort(i,   j,   k+1).norm() - wijk.norm())/h);
-                n.normalize();
-                Vector3d fconf = eps * h * n.cross(wijk);
-                fconf(2) += (fz + g);
-                Vector3d f = fconf;
-
-                // add in contribution to velocity
-                velNewX[i*N*N + j*N + k] = velX[i*N*N + j*N + k] + dt*f(0);
-                velNewY[i*N*N + j*N + k] = velY[i*N*N + j*N + k] + dt*f(1);
-                velNewZ[i*N*N + j*N + k] = velZ[i*N*N + j*N + k] + dt*f(2);
-            }
-        }
+    Vector3d Fire::vort(int i, int j, int k) {
+        double w1, w2, w3;
+        w1 =   (velCZ[i*N*N     + (j+1)*N + k] - velCZ[i*N*N     + (j-1)*N + k]
+              - velCY[i*N*N     + j*N + k+1]   + velCY[i*N*N     + j*N     + k-1])/(2*h);
+        w2 =   (velCX[i*N*N     + j*N + k+1]   - velCX[i*N*N     + j*N     + k-1]
+              - velCZ[(i+1)*N*N + j*N + k]     + velCZ[(i-1)*N*N + j*N     + k])/(2*h);
+        w3 =   (velCY[(i+1)*N*N + j*N + k]     - velCY[(i-1)*N*N + j*N     + k]
+              - velCX[i*N*N     + (j+1)*N + k] + velCX[i*N*N     + (j-1)*N + k])/(2*h);
+        return Vector3d(w1, w2, w3);
     }
 
-}
+    void Fire::advect() {
 
-Vector3d Fire::vort(int i, int j, int k) {
-    double w1, w2, w3;
-    w1 =   (velCZ[i*N*N     + (j+1)*N + k] - velCZ[i*N*N     + (j-1)*N + k]
-          - velCY[i*N*N     + j*N + k+1]   + velCY[i*N*N     + j*N     + k-1])/(2*h);
-    w2 =   (velCX[i*N*N     + j*N + k+1]   - velCX[i*N*N     + j*N     + k-1]
-          - velCZ[(i+1)*N*N + j*N + k]     + velCZ[(i-1)*N*N + j*N     + k])/(2*h);
-    w3 =   (velCY[(i+1)*N*N + j*N + k]     - velCY[(i-1)*N*N + j*N     + k]
-          - velCX[i*N*N     + (j+1)*N + k] + velCX[i*N*N     + (j-1)*N + k])/(2*h);
-    return Vector3d(w1, w2, w3);
-}
+        // solve advection
 
-void Fire::advect() {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                for (int k = 0; k < N; k++) {
 
-    // solve advection
+                    // velX is in world space units of distance / time
+                    // go backwards along characteristic flow line
+                    // --to first order this means to backwards along the velocity field
+                    float newI = i - dt * velX[i*N*N + j*N + k] / h;
+                    float newJ = j - dt * velY[i*N*N + j*N + k] / h;
+                    float newK = k - dt * velZ[i*N*N + j*N + k] / h;
 
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            for (int k = 0; k < N; k++) {
+                    int x = (int) newI;
+                    int y = (int) newJ;
+                    int z = (int) newK;
 
-                // velX is in world space units of distance / time
-                // go backwards along characteristic flow line
-                // --to first order this means to backwards along the velocity field
-                float newI = i - dt * velX[i*N*N + j*N + k] / h;
-                float newJ = j - dt * velY[i*N*N + j*N + k] / h;
-                float newK = k - dt * velZ[i*N*N + j*N + k] / h;
+                    float dx = newI - x;
+                    float dy = newJ - y;
+                    float dz = newK - z;
 
-                int x = (int) newI;
-                int y = (int) newJ;
-                int z = (int) newK;
+                    velNewX[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velX);
+                    velNewY[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velY);
+                    velNewZ[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velZ);
+                    newY[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, Y);
 
-                float dx = newI - x;
-                float dy = newJ - y;
-                float dz = newK - z;
-
-                velNewX[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velX);
-                velNewY[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velY);
-                velNewZ[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velZ);
-                newY[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, Y);
-
-            }
-        }
-
-    }
-
-
-
-}
-
-double Fire::triLerp(int x, int y, int z, double dx, double dy, double dz, vector<double> &arr) {
-    return  (1-dx) * (1-dy) * (1-dz) * arr[x*N*N     + y*N     + z]   +
-            (1-dx) * dy     * (1-dz) * arr[x*N*N     + (y+1)*N + z]   +
-            dx     * (1-dy) * (1-dz) * arr[(x+1)*N*N + y*N     + z]   +
-            dx     * dy     * (1-dz) * arr[(x+1)*N*N + (y+1)*N + z]   +
-            (1-dx) * (1-dy) * dz     * arr[x*N*N     + y*N     + z+1] +
-            (1-dx) * dy     * dz     * arr[x*N*N     + (y+1)*N + z+1] +
-            dx     * (1-dy) * dz     * arr[(x+1)*N*N + y*N     + z+1] +
-            dx     * dy     * dz     * arr[(x+1)*N*N + (y+1)*N + z+1];
-}
-
-
-
-double Fire::norm(double x, double y, double z) {
-    return sqrt(x*x + y*y + z*z);
-}
-
-void Fire::poissonPressure() {
-    int m = N*N*N;
-    VectorXd b(m);
-
-    double uGrad, C = ph*h/dt;
-    int n;
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            for (int k = 0; k < N; k++) {
-                // Builds b vector
-                n = i*N*N + j*N + k;
-                uGrad =          //Sum of (u_n+1 - u_n) for n(={x, y, z}
-                    velNewX[(i+1)*N*N + j*N     + k]   - velNewX[i*N*N + j*N + k] +
-                    velNewY[i*N*N     + (j+1)*N + k]   - velNewY[i*N*N + j*N + k] +
-                    velNewZ[i*N*N     + j*N     + k+1] - velNewZ[i*N*N + j*N + k];
-                if (grid[n] > 0 && grid[n] < h*1.5) {     //Calculates Ghost values for velocities crossing barrier
-                    if (grid[n + N*N] <= 0) uGrad += (ph/pf - 1)*S*(*gridNorm[n])[0];
-                    if (grid[n + N] <= 0)   uGrad += (ph/pf - 1)*S*(*gridNorm[n])[1];
-                    if (grid[n + 1] <= 0)   uGrad += (ph/pf - 1)*S*(*gridNorm[n])[2];
                 }
-                else if (grid[n] <= 0 && grid[n] > -h*1.5) {
-                    if (grid[n + N*N] > 0) uGrad += (pf/ph - 1)*S*(*gridNorm[n])[0];
-                    if (grid[n + N] > 0)   uGrad += (pf/ph - 1)*S*(*gridNorm[n])[1];
-                    if (grid[n + 1] > 0)   uGrad += (pf/ph - 1)*S*(*gridNorm[n])[2];
+            }
+
+        }
+
+
+
+    }
+
+    double Fire::triLerp(int x, int y, int z, double dx, double dy, double dz, vector<double> &arr) {
+        return  (1-dx) * (1-dy) * (1-dz) * arr[x*N*N     + y*N     + z]   +
+                (1-dx) * dy     * (1-dz) * arr[x*N*N     + (y+1)*N + z]   +
+                dx     * (1-dy) * (1-dz) * arr[(x+1)*N*N + y*N     + z]   +
+                dx     * dy     * (1-dz) * arr[(x+1)*N*N + (y+1)*N + z]   +
+                (1-dx) * (1-dy) * dz     * arr[x*N*N     + y*N     + z+1] +
+                (1-dx) * dy     * dz     * arr[x*N*N     + (y+1)*N + z+1] +
+                dx     * (1-dy) * dz     * arr[(x+1)*N*N + y*N     + z+1] +
+                dx     * dy     * dz     * arr[(x+1)*N*N + (y+1)*N + z+1];
+    }
+
+
+
+    double Fire::norm(double x, double y, double z) {
+        return sqrt(x*x + y*y + z*z);
+
+    }
+
+
+
+
+
+    void Fire::poissonPressure() {
+        int m = N*N*N;
+        VectorXd b(m);
+
+        double uGrad, C = ph*h/dt;
+        int n;
+        for (int i = 1; i < N-1; i++) {
+            for (int j = 1; j < N-1; j++) {
+                for (int k = 1; k < N-1; k++) {
+                    // Builds b vector
+                    n = i*N*N + j*N + k;
+//                    uGrad =          //Sum of (u_n+1 - u_n) for n(={x, y, z}
+//                        velNewX[(i+1)*N*N + j*N     + k]   - velNewX[i*N*N + j*N + k] +
+//                        velNewY[i*N*N     + (j+1)*N + k]   - velNewY[i*N*N + j*N + k] +
+//                        velNewZ[i*N*N     + j*N     + k+1] - velNewZ[i*N*N + j*N + k];
+                    if (grid[n] > 0 && grid[n] < h*1.5) {     //Calculates Ghost values for velocities crossing barrier
+                        if (grid[n + N*N] <= 0) uGrad += (ph/pf - 1)*S*( *(gridNorm[n]))[0];
+                        if (grid[n + N] <= 0)   uGrad += (ph/pf - 1)*S*( *(gridNorm[n]))[1];
+                        if (grid[n + 1] <= 0)   uGrad += (ph/pf - 1)*S*( *(gridNorm[n]))[2];
+                    }
+                    else if (grid[n] <= 0 && grid[n] > -h*1.5) {
+                        if (grid[n + N*N] > 0) uGrad += (pf/ph - 1)*S*( *(gridNorm[n]) )[0];
+                        if (grid[n + N] > 0)   uGrad += (pf/ph - 1)*S*( *(gridNorm[n]) )[1];
+                        if (grid[n + 1] > 0)   uGrad += (pf/ph - 1)*S*( *(gridNorm[n]) )[2];
+                    }
+                    double vx = velNewX[(i+1)*N*N + j*N + k];
+                    double vy = velNewY[i*N*N + (j+1)*N + k];
+                    double vz = velNewZ[i*N*N + j*N + k+1];
+//                    if (grid[n] > 0 && grid[n] < h*1.5) {     //Calculates Ghost values for velocities crossing barrier
+//                        if (grid[n + N*N] <= 0) vx = fGhost(i+1, j, k, 0);
+//                        if (grid[n + N] <= 0)   vy = fGhost(i, j+1, k, 1);
+//                        if (grid[n + 1] <= 0)   vy = fGhost(i, j, k+1, 2);
+//                    }
+//                    else if (grid[n] <= 0 && grid[n] > -h*1.5) {
+//                        if (grid[n + N*N] > 0) vx = hGhost(i+1, j, k, 0);
+//                        if (grid[n + N] > 0)   vy = hGhost(i, j+1, k, 1);
+//                        if (grid[n + 1] > 0)   vz = fGhost(i, j, k+1, 2);
+//                    }
+
+                    double divu = vx  - velNewX[i*N*N + j*N + k] +
+                                  vy   - velNewY[i*N*N + j*N + k] +
+                                  vz - velNewZ[i*N*N + j*N + k];
+
+
+                    divu = divu / dt;
+                    if (grid[n] > 0) uGrad = uGrad*pf/ph;
+                    b(n) = uGrad;
                 }
-                uGrad = uGrad*C;
-                if (grid[n] > 0) uGrad = uGrad*pf/ph;
-                b(n) = uGrad;
             }
         }
-    }
 
-    ConjugateGradient<SparseMatrix<double>, Lower|Upper, IncompleteCholesky<double, Lower|Upper>> cg;
-    cg.compute(A);
-    p = cg.solve(b);
-    std::cout << "#iterations:     " << cg.iterations() << std::endl;
-    std::cout << "estimated error: " << cg.error()      << std::endl;
-// update b, and solve again
-    x = cg.solve(b);
-
-}
+        ConjugateGradient<SparseMatrix<double>, Lower|Upper, IncompleteCholesky<double, Lower|Upper>> cg;
+        cg.compute(A);
+        p = cg.solve(b);
+        std::cout << "#iterations:     " << cg.iterations() << std::endl;
+        std::cout << "estimated error: " << cg.error()      << std::endl;
+    // update b, and solve again
 
 
-void Fire::updateVCenter() {
-
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            for (int k = 0; k < N; k++) {
-                // Builds velC vectors out of the vel vectors
-                velCX[i * N * N + j * N + k] = (velX[(i-1) * N * N + j * N + k] + velX[i * N * N + j * N + k]) / 2;
-                velCY[i * N * N + j * N + k] = (velY[i * N * N + (j-1) * N + k] + velY[i * N * N + j * N + k]) / 2;
-                velCZ[i * N * N + j * N + k] = (velZ[i * N * N + j * N + k-1] + velZ[i * N * N + j * N + k]) / 2;
-            }
-        }
-    }
+        for (int i = 1; i < N-1; i++) {
+            for (int j = 1; j < N-1; j++) {
+                for (int k = 1; k < N-1; k++) {
+                    // Builds b vector
+                    double Lpijk = p((i+1)*N*N + j*N + k) + p(i*N*N + (j+1)*N + k) + p(i*N*N + j*N + k+1)
+                    +p((i-1)*N*N + j*N + k) + p(i*N*N + (j-1)*N + k) + p(i*N*N + j*N + k-1)
+                    - 6 * p(i*N*N + j*N + k);
 
 
-}
-
-void Fire::updateY() {
-
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            for (int k = 0; k < N; k++) {
-                // Builds velC vectors out of the vel vectors
-                newY[i * N * N + j * N + k] -= dt * k;
-            }
-        }
-    }
-}
-
-void Fire::updateT() {
-
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            for (int k = 0; k < N; k++) {
-                // Builds velC vectors out of the vel vectors
-                double Y = newY[i * N * N + j * N + k];
-                if (0.9 < Y && Y < 1.0) {
-                    T[i * N * N + j * N + k] = Tignition + (1 - Y) * (Tmax - Tignition) / 0.1;
-                } else if (Y < 0.9) {
-                    T[i * N * N + j * N + k] = Tignition;
-                } else {
-                    T[i * N * N + j * N + k] = Tignition + (1 - Y) * (Tmax - Tignition) / 0.1 + (1 - Y) * (1 - Y);
                 }
+            }
+        }
 
+    }
+
+
+    void Fire::updateVCenter() {
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                for (int k = 0; k < N; k++) {
+                    // Builds velC vectors out of the vel vectors
+                    velCX[i * N * N + j * N + k] = (velX[(i-1) * N * N + j * N + k] + velX[i * N * N + j * N + k]) / 2;
+                    velCY[i * N * N + j * N + k] = (velY[i * N * N + (j-1) * N + k] + velY[i * N * N + j * N + k]) / 2;
+                    velCZ[i * N * N + j * N + k] = (velZ[i * N * N + j * N + k-1] + velZ[i * N * N + j * N + k]) / 2;
+                }
+            }
+        }
+
+
+    }
+
+    void Fire::updateY() {
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                for (int k = 0; k < N; k++) {
+                    // Builds velC vectors out of the vel vectors
+                    newY[i * N * N + j * N + k] -= dt * k0;
+                }
             }
         }
     }
-}
+
+    void Fire::updateT() {
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                for (int k = 0; k < N; k++) {
+                    // Builds velC vectors out of the vel vectors
+                    double Y = newY[i * N * N + j * N + k];
+                    if (0.9 < Y && Y < 1.0) {
+                        T[i * N * N + j * N + k] = Tignition + (1 - Y) * (Tmax - Tignition) / 0.1;
+                    } else if (Y < 0.9) {
+                        T[i * N * N + j * N + k] = Tignition;
+                    } else {
+                        T[i * N * N + j * N + k] = Tignition + (1 - Y) * (Tmax - Tignition) / 0.1 + (1 - Y) * (1 - Y);
+                    }
+
+                }
+            }
+        }
+    }
 
 
 
-void Fire::step() {
+    void Fire::step() {
 
-    propagateFront();
-
-
-    addForce();
-    velX = velNewX;
-    velY = velNewY;
-    velZ = velNewZ;
-
-    advect();
+        propagateFront();
 
 
+        addForce();
 
-    velX = velNewX;
-    velY = velNewY;
-    velZ = velNewZ;
+
+        advect();
+
+        poissonPressure();
+
+        velX = velNewX;
+        velY = velNewY;
+        velZ = velNewZ;
 
 
 
-    updateVCenter();
+        updateVCenter();
 
-    updateT();
+        updateT();
 
 
 
 
 
-}
+    }
 
 

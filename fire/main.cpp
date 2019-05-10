@@ -3,8 +3,8 @@
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
-    Fire engine = Fire();
-    engine.N = 160;
+    Fire engine;
+    engine.N = 10;
 
     engine.buildA();
 
