@@ -33,6 +33,7 @@ class Fire {
     double Tmax;  // maximum temperature
     int N; // Size of grid: grid will be 4 by N by N by N (4 because we have 4 quantities to keep track of)
     vector<double> grid; // grid with implicit surface at current time step
+    vector<array<double, 3>*> gridNorm; // The normalized gradient field of the grid at next time step
     // We define φ to be positive in the region of space filled with fuel, negative elsewhere and zero at the reaction zone.
     vector<double> newGrid; // grid with implicit surface at next time step
     SparseMatrix<double> A;
