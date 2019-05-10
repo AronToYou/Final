@@ -150,7 +150,8 @@ void Fire::advect() {
         for (int j = 0; j < N; j++) {
             for (int k = 0; k < N; k++) {
 
-                // velX is in world space units of distance / time
+                // velX is in world space units of 'distance / time'
+                // we divide by "h" to get units of 'cells / time'
                 // go backwards along characteristic flow line
                 // --to first order this means to backwards along the velocity field
                 float newI = i - dt * velX[i*N*N + j*N + k] / h;
@@ -165,29 +166,48 @@ void Fire::advect() {
                 float dy = newJ - y;
                 float dz = newK - z;
 
-                velNewX[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velX);
-                velNewY[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velY);
-                velNewZ[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velZ);
-                newY[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, Y);
+                array<array<double, 7>, 3> corrections;
+                for ()
 
+                velNewX[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velX, 0);
+                velNewY[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velY, 1);
+                velNewZ[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, velZ, 2);
+                newY[i*N*N + j*N + k] = triLerp(x, y, z, dx, dy, dz, Y, 3) - dt*k;
             }
         }
-
     }
-
-
-
 }
 
-double Fire::triLerp(int x, int y, int z, double dx, double dy, double dz, vector<double> &arr) {
-    return  (1-dx) * (1-dy) * (1-dz) * arr[x*N*N     + y*N     + z]   +
-            (1-dx) * dy     * (1-dz) * arr[x*N*N     + (y+1)*N + z]   +
-            dx     * (1-dy) * (1-dz) * arr[(x+1)*N*N + y*N     + z]   +
-            dx     * dy     * (1-dz) * arr[(x+1)*N*N + (y+1)*N + z]   +
-            (1-dx) * (1-dy) * dz     * arr[x*N*N     + y*N     + z+1] +
-            (1-dx) * dy     * dz     * arr[x*N*N     + (y+1)*N + z+1] +
-            dx     * (1-dy) * dz     * arr[(x+1)*N*N + y*N     + z+1] +
-            dx     * dy     * dz     * arr[(x+1)*N*N + (y+1)*N + z+1];
+double edge(int axis, int n, int dn) {
+    if (grid[n] > 0 && newGrid[n] > 0) {     //Calculates Ghost values for velocities crossing barrier
+        if (grid[n + dn] <= 0) return (ph/pf - 1)*S*(*gridNorm[n + dn])[axis];
+    }
+    else if (grid[n] <= 0 && newGrid[n] <= 0) {
+        if (grid[n + dn] > 0) return (pf/ph - 1)*S*(*gridNorm[n + dn])[axis];
+    }
+    else if (grid[n] > 0 && newGrid[n] <= 0) {
+        if (grid[n + dn] > 0) return (pf/ph - 1)*S*(*gridNorm[n + dn])[axis];
+    }
+    else {
+        if (grid[n + dn] > 0) return (ph/pf - 1)*S*(*gridNorm[n + dn])[axis];
+        return 0;
+    }
+}
+
+
+double Fire::triLerp(int x, int y, int z, double dx, double dy, double dz, vector<double> &arr, int axis) {
+    int n = x*N*N + y*N + z;
+    return    (1 - dx) * (1 - dy) * (1 - dz) * arr[n] +
+
+              dx       * (1 - dy) * (1 - dz) * arr[n + N*N] +
+              (1 - dx) * dy       * (1 - dz) * arr[n + N] +
+              (1 - dx) * (1 - dy) * dz       * arr[n + 1] +
+
+              dx       * dy       * (1 - dz) * arr[n + N*N + N] +
+              dx       * (1 - dy) * dz       * arr[n + N*N + 1] +
+              (1 - dx) * dy       * dz       * arr[n + N + 1] +
+
+              dx       * dy       * dz       * arr[n + N*N + N + 1];
 }
 
 
@@ -252,17 +272,6 @@ void Fire::updateVCenter() {
 
 }
 
-void Fire::updateY() {
-
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            for (int k = 0; k < N; k++) {
-                // Builds velC vectors out of the vel vectors
-                newY[i * N * N + j * N + k] -= dt * k;
-            }
-        }
-    }
-}
 
 void Fire::updateT() {
 

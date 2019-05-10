@@ -37,6 +37,7 @@ private:
     double Tmax;  // maximum temperature
     double vMax;  // cap on velocity magnitude
     vector<double> grid; // grid with implicit surface at current time step
+    vector<double> newGrid; // grid with implicit surface at next time step
     vector<array<double, 3>*> gridNorm; // The normalized gradient field of the grid at next time step
     // We define φ to be positive in the region of space filled with fuel, negative elsewhere and zero at the reaction zone.
     vector<double> newGrid; // grid with implicit surface at next time step
@@ -67,9 +68,9 @@ public:
 
     Fire();
 
-    void updateY();
-
     void updateT();
+
+    double edge(int, int, int);
 
     void propagateFront();
 
@@ -79,7 +80,7 @@ public:
 
     void advect();
 
-    double triLerp(int x, int y, int z, double dx, double dy, double dz, vector<double> &arr);
+    double triLerp(int x, int y, int z, double dx, double dy, double dz, vector<double> &arr, int axis);
 
     void addForce();
 
