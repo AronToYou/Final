@@ -306,7 +306,7 @@ void Fire::poissonPressure() {
             }
         }
     }
-    if (false) {
+    if (true) {
         buildA();
         ConjugateGradient<SparseMatrix<double>, Lower|Upper, IncompleteCholesky<double, Lower|Upper>> cg;
         cg.compute(A);

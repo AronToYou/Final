@@ -63,7 +63,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = C:\Users\A-ron\Desktop\184\Final\fire
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\A-ron\Desktop\184\Final\fire\cmake-build-release
+CMAKE_BINARY_DIR = C:\Users\A-ron\Desktop\184\Final\fire\cmake-build-release-visual-studio
 
 #=============================================================================
 # Special targets to cleanup operation of make.
