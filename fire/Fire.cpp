@@ -23,10 +23,14 @@ Fire::Fire() {
     Tmax = 2253;  // (K) Maximum temperature
     C = S*(pf/ph - 1); // Correction for velocity discontinuity at implicit surface
 
-    for (int n = 0; n < N*N*N; n++) {
+    for (int n = 0; n < N*N*N; n++)
         gridNorm.push_back(new array<double, 3>);
-    }
 
+    for (int n = 0; n < (int)pow(N+1, 3); n++){
+        grid.push_back(INF);
+        newGrid.push_back(INF);
+        
+    }
 }
 
 
@@ -227,14 +231,21 @@ void Fire::poissonPressure() {
 
 
 void Fire::applyPressure() {
-    double rho, divP;
+    double rho, vMag;
     for (int n = 0; n < N*N*N; n++) {
-        divP = (p[n + N*N] + p[n + N] + p[n + 1] - 3*p[n]);
-
         if (newGrid[n] > 0) rho = pf;
         else rho = ph;
 
-        velX[n] = velNewX[n] - dt*divP/rho;
+        velX[n] = velNewX[n] - dt*(p[n + N*N] - p[n])/rho;
+        velY[n] = velNewY[n] - dt*(p[n + N] - p[n])/rho;
+        velZ[n] = velNewZ[n] - dt*(p[n + 1] - p[n])/rho;
+        vMag = norm(velX[n], velY[n], velZ[n]);
+        // Clamps the final velocity to a maximum
+        if (vMag > vMax) {
+            velX[n] = vMax * velX[n] / vMag;
+            velY[n] = vMax * velY[n] / vMag;
+            velZ[n] = vMax * velZ[n] / vMag;
+        }
     }
 }
 

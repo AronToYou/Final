@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <limits>
 
 #ifndef FIRE_FIRE_H
 #define FIRE_FIRE_H
@@ -18,6 +19,8 @@
 using namespace Eigen;
 
 using namespace std;
+
+const double INF = numeric_limits<double>::infinity();
 
 
 class Fire {
