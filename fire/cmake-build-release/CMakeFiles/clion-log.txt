@@ -1,16 +1,4 @@
 "C:\Program Files\JetBrains\CLion 2019.1.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - NMake Makefiles" C:\Users\A-ron\Desktop\184\Final\fire
 -- Configuring done
-CMake Error at CMakeLists.txt:8 (add_executable):
-  Cannot find source file:
-
-    FireNew.h
-
-  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .m .M .mm .h .hh .h++ .hm
-  .hpp .hxx .in .txx
-
-
-CMake Error at CMakeLists.txt:8 (add_executable):
-  No SOURCES given to target: fire
-
-
+-- Generating done
 -- Build files have been written to: C:/Users/A-ron/Desktop/184/Final/fire/cmake-build-release
