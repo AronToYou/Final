@@ -7,7 +7,8 @@
 Fire::Fire() {
     N = 160;
     NNN =  N*N*N;
-    dt = 1 / 1200; // (s) size of time steps for front propagation. Fluids are updated with 5*dt
+    dt = 1 / 1200; // (s) size of time steps for front propagation.
+    dT = 5*dt;     // (s) size of time steps for Fluid Equations.
     h = 0.05; // (m) grid spacing
     env = environment::empty; // default environment
 
@@ -35,7 +36,8 @@ Fire::Fire() {
 
 
 void Fire::step() {
-    propagateFront();
+    for (int num = 0; num < 5; num++) // Since we must propagate the front with
+        propagateFront();             // 1/5th the full time step
 
     addForce();
 
@@ -170,9 +172,9 @@ void Fire::addForce() {
                 if (grid[n] > 0) rho = pf;
                 else rho = ph;                                                   // Questionable vel Choice
                 // add in contribution to velocity
-                velX[n] = velX[n] + dt * f(0) / rho;
-                velY[n] = velY[n] + dt * f(1) / rho;
-                velZ[n] = velZ[n] + dt * (f(2) / rho + g);  // plus gravity
+                velX[n] = velX[n] + dT * f(0) / rho;
+                velY[n] = velY[n] + dT * f(1) / rho;
+                velZ[n] = velZ[n] + dT * (f(2) / rho + g);  // plus gravity
             }
         }
     }
@@ -194,9 +196,9 @@ void Fire::advect() {
                 }
 
                 int n = i*N*N + j*N + k;
-                float newI = i - dt * velX[n] / h;
-                float newJ = j - dt * velY[n] / h;
-                float newK = k - dt * velZ[n] / h;
+                float newI = i - dT * velX[n] / h;
+                float newJ = j - dT * velY[n] / h;
+                float newK = k - dT * velZ[n] / h;
 
                     int x = clamp((int) newI);
                     int y = clamp((int) newJ);
@@ -226,7 +228,7 @@ void Fire::advect() {
                 velNewY[n] = triLerp(x, y, z, dx, dy, dz, velY, &corrections[1]);
                 velNewZ[n] = triLerp(x, y, z, dx, dy, dz, velZ, &corrections[2]);
                 if (newGrid[n] > 0) newY[n] = 1;
-                else newY[n] = triLerp(x, y, z, dx, dy, dz, Y) - dt*k;
+                else newY[n] = triLerp(x, y, z, dx, dy, dz, Y) - dT*k;
             }
         }
     }
@@ -248,7 +250,7 @@ array<double, 3> Fire::edge(int n, int dn) {
 
 void Fire::poissonPressure() {
     VectorXd b(NNN);
-    double uDiv, c = ph*h/dt;
+    double uDiv, c = ph*h/dT;
 
     // Builds b vector
     for (int i = 0; i < N; i++) {
@@ -311,17 +313,17 @@ void Fire::applyPressure() {
                 if (newGrid[n] > 0) rho = pf;
                 else rho = ph;
 
-                if (i == 0) velX[n] = velNewX[n] - dt * (p[n + N*N] - p[n])*2 / rho;
-                else if (i == N-1) velX[n] = velNewX[n] - dt * (p[n] - p[n - N*N])*2 / rho;
-                else velX[n] = velNewX[n] - dt * (p[n + N*N] - p[n - N*N]) / rho;
+                if (i == 0) velX[n] = velNewX[n] - dT * (p[n + N*N] - p[n])*2 / rho;
+                else if (i == N-1) velX[n] = velNewX[n] - dT * (p[n] - p[n - N*N])*2 / rho;
+                else velX[n] = velNewX[n] - dT * (p[n + N*N] - p[n - N*N]) / rho;
 
-                if (j == 0) velY[n] = velNewY[n] - dt * (p[n + N] - p[n])*2 / rho;
-                else if (j == N-1) velY[n] = velNewY[n] - dt * (p[n] - p[n - N])*2 / rho;
-                else velY[n] = velNewY[n] - dt * (p[n + N] - p[n - N]) / rho;
+                if (j == 0) velY[n] = velNewY[n] - dT * (p[n + N] - p[n])*2 / rho;
+                else if (j == N-1) velY[n] = velNewY[n] - dT * (p[n] - p[n - N])*2 / rho;
+                else velY[n] = velNewY[n] - dT * (p[n + N] - p[n - N]) / rho;
 
-                if (i == 0) velZ[n] = velNewZ[n] - dt * (p[n + 1] - p[n])*2 / rho;
-                else if (i == N-1) velZ[n] = velNewZ[n] - dt * (p[n] - p[n - 1])*2 / rho;
-                else velZ[n] = velNewZ[n] - dt * (p[n + 1] - p[n - 1]) / rho;
+                if (i == 0) velZ[n] = velNewZ[n] - dT * (p[n + 1] - p[n])*2 / rho;
+                else if (i == N-1) velZ[n] = velNewZ[n] - dT * (p[n] - p[n - 1])*2 / rho;
+                else velZ[n] = velNewZ[n] - dT * (p[n + 1] - p[n - 1]) / rho;
 
 
                 vMag = norm(velX[n], velY[n], velZ[n]);

@@ -10,6 +10,7 @@
  * Apply epsh & epsf correctly-- incomplete
  * what is M variable? -- incomplete
  * improve temperature falloff e.g. see equation (17) in primary paper
+ * Save final data to file
  * more??
  *
  * Future:
@@ -46,7 +47,8 @@ private:
     // Simulation Environment Parameters
     int N; // Number of cells per grid axis
     int NNN; // N*N*N for OCD micro-optimization
-    double dt; // size of time steps
+    double dt; // size of time steps for Front Propagation
+    double dT; // size of time steps for Fluid Equations
     double h; // Grid cell edge length
     environment env; // Initialized environment (Fuel Source, initial fields)
 

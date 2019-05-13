@@ -12,11 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ae194f8-36c2-4a95-8761-0738c6c92527" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Changelog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Changelog.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fire.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Fire.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fire.h" beforeDir="false" afterPath="$PROJECT_DIR$/Fire.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/cmake-build-release/" />
@@ -46,20 +43,20 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Fire.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="234">
+              <caret line="47" column="20" lean-forward="true" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Fire.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="41" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
+            <state relative-caret-position="174">
+              <caret line="50" column="56" selection-start-line="50" selection-start-column="56" selection-end-line="50" selection-end-column="56" />
               <folding>
                 <element signature="e#74#91#0" expanded="true" />
                 <element signature="e#265#293#0" expanded="true" />
@@ -82,6 +79,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>gridNorm</find>
+      <find>dt</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -93,8 +91,8 @@
         <option value="$PROJECT_DIR$/FireNew.h" />
         <option value="$PROJECT_DIR$/FireNew.cpp" />
         <option value="$PROJECT_DIR$/main.cpp" />
-        <option value="$PROJECT_DIR$/Fire.cpp" />
         <option value="$PROJECT_DIR$/Fire.h" />
+        <option value="$PROJECT_DIR$/Fire.cpp" />
       </list>
     </option>
   </component>
@@ -160,12 +158,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1557516659214</updated>
-      <workItem from="1557516667350" duration="48306000" />
+      <workItem from="1557516667350" duration="49240000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48306000" />
+    <option name="totallyTimeSpent" value="49240000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -185,7 +183,7 @@
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" sideWeight="0.49924356" weight="0.3289689" />
-      <window_info anchor="bottom" id="Messages" sideWeight="0.49924356" weight="0.049099836" />
+      <window_info active="true" anchor="bottom" id="Messages" sideWeight="0.49924356" visible="true" weight="0.21440262" />
       <window_info anchor="bottom" id="Terminal" weight="0.3289689" />
       <window_info anchor="bottom" id="Event Log" sideWeight="0.50075644" side_tool="true" weight="0.3289689" />
       <window_info anchor="bottom" auto_hide="true" id="CMake" sideWeight="0.49924356" weight="0.3289689" />
@@ -263,21 +261,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Fire.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Fire.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="41" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
+        <state relative-caret-position="174">
+          <caret line="50" column="56" selection-start-line="50" selection-start-column="56" selection-end-line="50" selection-end-column="56" />
           <folding>
             <element signature="e#74#91#0" expanded="true" />
             <element signature="e#265#293#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Fire.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="47" column="20" lean-forward="true" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
         </state>
       </provider>
     </entry>
