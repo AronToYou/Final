@@ -1354,7 +1354,7 @@
 
 
   <h3>
-    Our simulation algorithm
+    Our Simulation Algorithm
   </h3>
 
     <p>
@@ -1367,7 +1367,7 @@
       For all the algorithms in the probabilistic implementation, each update step works by calling the mutate function on two groups. The two groups are determined such that each location is not neighbors with any in the same group. This is because each pixel is mutated based on the value of its neighbors, so the two step update prevents previous results from affecting future ones.
     </p>
     <p>
-      In order to improve our fire simulation, we attempted to add smoke. This involved updating the fragment shader and the mutate step. In the fragment shader, we placed a barrier around the fire such that if a pixel were to be turned on outside of it, the color would be grey.
+      In order to improve our fire simulation, we attempted to add smoke. This involved updating the fragment shader and the mutate step. In the fragment shader, we placed a barrier around the fire such that if a pixel were to be turned on outside of it, the color would be grey. The mutate function was also updated so that on top of the original neighbor update method, if a pixel was above a certain height, it had a chance to turn on based on the pixels below it within a certain step size. This allowed smoke to propagate up. 
     </p>
 
     <h3>
