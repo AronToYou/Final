@@ -181,6 +181,10 @@
               both of these phenomena.
             </p>
         </div>
+        <video class="tab" height="350" width="425" style="display:block; margin: 0 auto; object-fit: inherit;"
+         controls>Your browser does not support the &lt;video&gt; tag.
+          <source src="blowup.mov"/>
+        </video>
 
             <h5 class = subsection2 align="middle">Shaders</h4>
         <div id = "stuff">
@@ -261,10 +265,7 @@
             <a id="next">&#9654;</a>
         </div>
 
-            <video class="tab" height="350" width="425" style="display:block; margin: 0 auto; object-fit: inherit;"
-             controls>Your browser does not support the &lt;video&gt; tag.
-              <source src="blowup.mov"/>
-            </video>
+
             <h2 class="subsection" align="middle">What we learned</h2>
 
             <p class="info">
@@ -283,13 +284,24 @@
                As a part of our exploration of using random systems to generate
                dynamics for physical processes, we experimented with simulations
                of lightning. The simulation algorithm is from
-               (cite laplacian instability paper), and it is meant to model the following situation:
+               (cite laplacian instability paper), and it is meant to
+                approximate the following situation:
                Place a small conducting sphere at the origin, and a large
                concentric positively charged spherical
                shell around the origin. The surface of the small conductor can expand randomly
                in any direction, and the distribution of where this expansion happens is proportional
-               to the electric potential at this point.
+               to the electric potential at this point. This potential is given by
+               the inverse of the Laplacian operator, or in other words by a greens function,
+               and small changes in the shape of the conductor can cause large changes to the
+               greens function, which ultimately causes large streaks of the conductor
+               to branch out in a lighting-like way. We implemented the algorithm, and without
+               any processing to make it render nicely, this is our result.
               </p>
+
+              <video class="tab" height="350" width="425" style="display:block; margin: 0 auto; object-fit: inherit;"
+               controls>Your browser does not support the &lt;video&gt; tag.
+                <source src="lightning.mov"/>
+              </video>
 
 
 
