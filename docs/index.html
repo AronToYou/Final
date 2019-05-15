@@ -19,9 +19,9 @@
       <div id="top">
         <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2019</h1>
         <h1 id="title" align="middle">Final Project: Fire Simulator</h2>
-        <h3 id="names" align="middle">Matthew Nicoletti, Jarod Kong, Aron Lloyd </h2>
-        <div id=bottom-line></div>
-      </div>
+  			<h3 id="names" align="middle">Matthew Nicoletti, Jarod Kong, Aron Lloyd </h2>
+  			<div id=bottom-line></div>
+  		</div>
 
 
         <br><br>
@@ -47,7 +47,9 @@
               Although our method ultimately was conceptually completely different,
               our group studied one of the most popular fire simulation methods
               to date, known as the level set method
-               (cite Stam's stable fluids, and Stanford "physbam" people). For
+               (<a href="http://www.dgp.toronto.edu/people/stam/reality/Research/pdf/ns.pdf" target="_blank">Stable Fluids</a>,
+                <a href="http://physbam.stanford.edu/~fedkiw/papers/stanford2002-02.pdf" target="_blank">Physically Based Model and Animation of Fire</a>).
+                For
               completeness, we outline the key steps in the method here.
             </p>
             <p class="info">
@@ -311,6 +313,10 @@
           <h2 class="subsection" align="middle">Contributions</h2>
             <p class="info">
               <b>Matthew:</b>
+            Helped with development of the WebGL algorithm and attempted to change the mutation step to add vorticity.
+               Experimented with parameters to find the best looking results. Understood papers on physically based simulation
+               techniques. Made lightning simulation as part of further experimentation.
+                Worked on writeup for milestone and final deliverable.
             </p>
             <p class="info">
               <b>Jarod:</b> Primarily worked on WebGL application. Helped with development of algorithm and implemented the smoke changes to the shaders and the mutation steps. Experimented with parameters to find the best looking results. Worked on video production for milestone and final deliverable.
@@ -327,7 +333,8 @@
                As a part of our exploration of using random systems to generate
                dynamics for physical processes, we experimented with simulations
                of lightning. The simulation algorithm is from
-               (cite laplacian instability paper), and it is meant to
+               (<a href="http://gamma.cs.unc.edu/FRAC/laplacian_large.pdf" target="_blank">Fast Simulation of Laplacian Growth</a>),
+                and it is meant to
                 approximate the following situation:
                Place a small conducting sphere at the origin, and a large
                concentric positively charged spherical
@@ -335,8 +342,8 @@
                in any direction, and the distribution of where this expansion happens is proportional
                to the electric potential at this point. This potential is given by
                the inverse of the Laplacian operator, or in other words by a greens function,
-               and these small changes in the shape of the conductor can cause changes to the
-               greens function that make it unstable, which ultimately causes
+               and these small changes in the shape of the conductor can create an
+               unstable feedback loop, which ultimately causes
                large streaks of the conductor to grow and
                branch out in a lighting-like way. We implemented the algorithm, and without
                any processing to make it render nicely, this is our result.

@@ -1,5 +1,5 @@
 html {
-  margin: 0px;
+	margin: 0px;
   background-color: #f9bd63;
   width: 100%;
   min-width: 550px;
@@ -19,7 +19,7 @@ content {
 }
 
 h1 {
-  font-family: 'Cinzel', serif;
+	font-family: 'Cinzel', serif;
   letter-spacing: 10px;
   font-size: 50px;
   color: #e03d18;
@@ -28,35 +28,35 @@ h1 {
 
 h2 {
   font-family: 'Press Start 2P', cursive;
-  font-size: 28px;
+	font-size: 28px;
   color: #a00b0b;
   font-weight: lighter;
 }
 
 h3 {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 24px;
+	font-family: 'Press Start 2P', cursive;
+	font-size: 24px;
   color: #ddac0b;
   font-weight: lighter;
 }
 
 h4 {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 20px;
+	font-family: 'Press Start 2P', cursive;
+	font-size: 20px;
   color: #ddac0b;
   font-weight: lighter;
 }
 
 h5 {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 26px;
+	font-family: 'Press Start 2P', cursive;
+	font-size: 26px;
   color: #ddac0b;
   font-weight: lighter;
 }
 
 p {
   font-family: 'Work Sans', sans-serif;
-  font-size: 18px;
+	font-size: 18px;
   color: #000000;
   font-weight: lighter;
   line-height: 30px;
@@ -86,19 +86,19 @@ p {
 }
 
 .navbar-item {
-  display: inline-block;
-  text-align: center;
+	display: inline-block;
+	text-align: center;
   line-height: 40px;
   width: 180px;
   text-decoration: none;
   font-size: 16px;
   font-family: 'Assistant', sans-serif;
   font-weight: lighter;
-  color: #61616d;
+	color: #61616d;
 }
 
 .navbar-item:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 .navbar-item, .info{
