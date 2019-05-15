@@ -186,13 +186,11 @@
           <source src="blowup.mov"/>
         </video>
 
-            <h5 class = subsection2 align="middle">Shaders</h4>
+      <h5 class = subsection2 align="middle">Shaders</h5>
         <div id = "stuff">
             <div class="shader">
                 <h4 class="title">Front Propagation</h2>
                 <p class="details">
-
-
                   $$\phi_t = -\vec{w}\cdot\nabla\phi$$
                   <b>Numerically:</b>
                   $$\phi^{new}=\phi^{old}-\Delta(w_1\phi_x+w_2\phi_y+w_3\phi_z)$$
@@ -275,9 +273,47 @@
               disrupting its stability. The model which looked the most like fire
               was the simplest one with only the basic particle propogation rules.
              </p>
+        <div id="results">
+            <h2 class="subsection" align="middle">Results</h2>
+            <p class="info">
+              In order to achieve the best looking fires, we had to test several different combinations of the parameters.
+            </p>
+            <div align="center"><p>Fire with Ratio:0.4, Speed:0.1, Vertical_Ratio:10:</p></div>
+            <video class="tab" height="350" width="425" style="display:block; margin: 0 auto; object-fit: inherit;"
+               controls>Your browser does not support the &lt;video&gt; tag.
+                <source src="fire_best.mov"/>
+            </video>
+            <div align="center"><p>Smoke Simulation Added:</p></div>
+            <video class="tab" height="350" width="425" style="display:block; margin: 0 auto; object-fit: inherit;"
+             controls>Your browser does not support the &lt;video&gt; tag.
+              <source src="smoke.mov"/>
+            </video>
+        </div>
 
+        <div id="resources">
+          <h2 class="subsection" align="middle">References</h2>
+          <p align="middle"><a href="http://physbam.stanford.edu/~fedkiw/papers/stanford2002-02.pdf" target="_blank">Physically Based Model and Animation of Fire</a></p>
+        </div>
 
-             <h2 class="subsection" align="middle">Extra</h2>
+        <div id="resources">
+          <h2 class="subsection" align="middle">Video Link</h2>
+          <p align="middle"><a href="https://www.youtube.com/watch?v=bnS1Wors3FU&feature=youtu.be" target="_blank">CS184 Final Project Video</a></p>
+        </div>
+
+        <div id="contributions">
+          <h2 class="subsection" align="middle">Contributions</h2>
+            <p class="info">
+              <b>Matthew:</b>
+            </p>
+            <p class="info">
+              <b>Jarod:</b> Primarily worked on WebGL application. Helped with development of algorithm and implemented the smoke changes to the shaders and the mutation steps. Experimented with parameters to find the best looking results. Worked on video production for milestone and final deliverable.
+            </p>
+            <p class="info">
+              <b>Aron:</b>
+            </p>
+        </div>
+
+         <h2 class="subsection" align="middle">Extras</h2>
 
 
              <p class="info">
@@ -302,26 +338,5 @@
                controls>Your browser does not support the &lt;video&gt; tag.
                 <source src="lightning.mov"/>
               </video>
-
-
-
-        <div id="results">
-            <h2 class="subsection" align="middle">Results</h2>
-            <p class="info">
-              In order to achieve the best looking fires, we had to test several different combinations of the parameters.
-            </p>
-        </div>
-
-        <div id="resources">
-          <h2 class="subsection" align="middle">References</h2>
-          <p align="middle"><a href="http://physbam.stanford.edu/~fedkiw/papers/stanford2002-02.pdf" target="_blank">Physically Based Model and Animation of Fire</a></p>
-        </div>
-
-        <div id="contributions">
-          <h2 class="subsection" align"middle">Contributions</h2>
-            <p class="info">
-
-            </p>
-        </div>
     </body>
-=</html>
+</html>
