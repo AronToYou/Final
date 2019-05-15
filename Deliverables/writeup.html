@@ -121,11 +121,33 @@
         for what these ghost values should be can be derived from first principles.
     </p>
 
+    <p> As noted previously, our approach to the simulation was whole-heartedly
+      different in nature than the physically based approach outlined above.
+       One possible way to view the system we have created is as a perturbed
+    discrete time version of two-dimensional ASEP. ASEP is a continuous time
+    Markov chain which can be thought of as a simplified model for traffic flow
+    or interacting particle systems. ASEP is a very simple model, and in
+    one dimesnion it is well known that as the grid mesh approaches a continuum,
+    the dynamics of ASEP are governed by a Burgers type equation, which is 
+    (in a rough sense) similar
+    to the advection equation used to model stable fluids. In
+    ASEP, each grid cell can be either occupied by a particle, or unoccupied, and
+    each particle has an exponentially distributed alarm clock, and when its
+    clock goes off a particle attempts a jump to one of its neighboring squares
+    (say, uniformly at random) and succeeds if no other particle is already there. Otherwise,
+    it stays where it is, and either way it restarts its alarm clock.
+    In our model there are also two types of grid squares, "on" or "off", and each
+    grid square does a random update based only on its neighbors. However, the
+    "off" particles can percolate into the "on" squares and vice versa.
+
+    </p>
 
 
   <h3>
     Our Simulation Algorithm
   </h3>
+
+
 
     <p>
       In order to better understand the algorithm, the shader and texture need to be explained first. The WebGL fragment shader colors our texture by taking a weighted sum of the neighbors' color. This allows the texture to mimic fire by having a more pronounced color on the edges while  the center becomes a lot brighter and whiter. The way the N x N texture is populated for the WebGL shader was by using a pixel N x N array. This pixel array determines whether to color a particular location on the texture depending if its value is 0 (off) or 255 (on). This means that in order to simulate our fire animation, the only thing that needs to be modified is the pixel array.
@@ -160,7 +182,8 @@
 
     </p>
 
-    <p> Our change did not quite have the desired effect. In general, the fire
+    <p>
+      Our change did not quite have the desired effect. In general, the fire
       looks quite similar, although it overall tends to appear more chaotic
       and a little bit less natural. Another undesirable side affect is that
       occasionally the system reaches some sort of critical point and the fire
@@ -177,7 +200,23 @@
       What we learned
     </h3>
 
-    <p>  jjjjj </p>
+    <p>  One possible way to view the system we have created is as a perturbed
+    discrete time version of two-dimensional ASEP. ASEP is a continuous time
+    Markov chain which can be thought of as a simplified model for traffic flow
+    or interacting particle systems. ASEP is a very simple model, and in
+    one dimesnion it is well known that as the grid mesh approaches a continuum,
+    the dynamics of ASEP are governed by a Burgers type equation, which is similar
+    to the advection equations used to model stable fluids. In
+    ASEP, each grid cell can be either occupied by a particle, or unoccupied, and
+    each particle has an exponentially distributed alarm clock, and when its
+    clock goes off a particle attempts a jump to one of its neighboring squares
+    (say, uniformly at random) and succeeds if no other particle is already there. Otherwise,
+    it stays where it is, and either way it restarts its alarm clock.
+    In our model there are also two types of grid squares, "on" or "off", and each
+    grid square does a random update based only on its neighbors. However, the
+    "off" particles can percolate into the "on" squares and vice versa.
+
+   </p>
 
   <h2>
     Results
