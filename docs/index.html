@@ -139,7 +139,7 @@
                       $$\nabla^2p = \rho\frac{h}{\Delta t}\nabla\cdot\mathbf{u}$$
                       The generic methods for doing this involve
                       approximating the continuous Laplacian with a discrete graph Laplacian
-                      $$\sum_{n\in\{xyz\}}p_n -6p = \rho\frac{h}{\Delta t}\sum_{n\in\{\xyz\}}(u_{n+1}-u_n)$$
+                      $$\sum_{n\in\{xyz\}}p_n -6p = \rho\frac{h}{\Delta t}\sum_{n\in\{xyz\}}(u_{n+1}-u_n)$$
                       and using a fast linear solver to solve the resuling (sparse) linear system.
                       We built and passed this matrix into an Eigen library Conjugate Gradient algorithm.
                       The point is that whenever the velocity field exhibits any induced divergence (from the previous terms), then

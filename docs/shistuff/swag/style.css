@@ -127,7 +127,7 @@ p {
 
 #stuff {
   position: relative;
-  top: 300px;
+  top: 350px;
   left: 50%;
   transform: translate(-50%, -50%);
   align-items: center;
