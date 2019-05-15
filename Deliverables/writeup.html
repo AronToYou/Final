@@ -12,10 +12,8 @@
 
 
     </head>
-
-
     <body>
-
+      <div id="content">
       <div id="top">
         <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2019</h1>
         <h1 id="title" align="middle">Final Project: Fire Simulator</h2>
@@ -132,9 +130,9 @@
 
             <h3 class="subsection2" align="middle">Our Simulation Algorithm</h3>
             <p class="info">
-              In order to better understand the algorithm, the shader and texture need to be explained first. The WebGL fragment shader colors our
+              In order to better understand the algorithm, the terms and texture need to be explained first. The WebGL fragment terms colors our
               texture by taking a weighted sum of the neighbors' color. This allows the texture to mimic fire by having a more pronounced color on
-              the edges while  the center becomes a lot brighter and whiter. The way the N x N texture is populated for the WebGL shader was by
+              the edges while  the center becomes a lot brighter and whiter. The way the N x N texture is populated for the WebGL terms was by
               using a pixel N x N array. This pixel array determines whether to color a particular location on the texture depending if its value
               is 0 (off) or 255 (on). This means that in order to simulate our fire animation, the only thing that needs to be modified is the pixel
               array.
@@ -153,8 +151,8 @@
               mutated based on the value of its neighbors, so the two step update prevents previous results from affecting future ones.
             </p>
             <p class="info">
-              In order to improve our fire simulation, we attempted to add smoke. This involved updating the fragment shader and the mutate step.
-              In the fragment shader, we placed a barrier around the fire such that if a pixel were to be turned on outside of it, the color would
+              In order to improve our fire simulation, we attempted to add smoke. This involved updating the fragment terms and the mutate step.
+              In the fragment terms, we placed a barrier around the fire such that if a pixel were to be turned on outside of it, the color would
               be grey. The mutate function was also updated so that on top of the original neighbor update method, if a pixel was above a certain
               height, it had a chance to turn on based on the pixels below it within a certain step size. This allowed smoke to propagate up.
             </p>
@@ -191,49 +189,44 @@
           <source src="blowup.mov"/>
         </video>
 
-            <h5 class = subsection2 align="middle">Shaders</h4>
+            <h5 class = subsection2 align="middle">Simulation Steps</h4>
         <div id = "stuff">
-            <div class="shader">
+            <div class="terms">
                 <h4 class="title">Front Propagation</h2>
                 <p class="details">
-
+                  The first step in each frame is to move forward the reaction boundary. This is done with a simple 1st order equation.
 
                   $$\phi_t = -\vec{w}\cdot\nabla\phi$$
-                  <b>Numerically:</b>
+                  <b>Numerically</b> this looks like:
                   $$\phi^{new}=\phi^{old}-\Delta(w_1\phi_x+w_2\phi_y+w_3\phi_z)$$
                   $$\text{Where: }\vec{w}\equiv(V_f + S)\hat{n}$$
-                  Here, <b>w</b> is the velocity with which the front moves.
-
-                $$\mathbf{u}=\mathbf{w}-\nabla p$$
-
+                  Here, <b>\(V_f\)</b> is the velocity of fuel vapor, normal to the surface. <b>S</b> is the reaction velocity.
               </p>
               <div class="pic"><img src="assets/img/pressure.png"></div>
             </div>
 
-            <div class="shader">
+            <div class="terms">
                 <h4 class="title">Buoyancy/Gravity</h2>
                 <p class="details">
-                  Advection handles the directional dissipation of the three information f
-                  $$q(\mathbf{x}, t + \delta t) = q(\mathbf{x} - \mathbf{u}(\mathbf{x}, t) \delta t, t)$$
-
-                  Note that <b>q</b> can represents fluid properties density, velocity, and
+                  $$F_{buoy}=\alpha(T-T_{air})\hat{z}$$
+                  $$F_{grav}$$
                 </p>
                 <div class="pic"><img src="assets/img/advection.png"></div>
             </div>
 
-            <div class="shader">
+            <div class="terms">
                 <h4 class="title">Vorticity</h2>
                 <p class="details">
 
-                  We have separate shaders for each of the slabs in order to produce more customized visualizations.
+                  We have separate termss for each of the slabs in order to produce more customized visualizations.
                 </p>
                 <div class="pic"><img src="assets/img/impulse.png"></div>
             </div>
 
-            <div class="shader">
+            <div class="terms">
                 <h4 class="title">Advection</h2>
                 <p class="details">
-                  The buoyancy shader applies a force along the vertical axis. This is where the temperature slab comes into play.
+                  The buoyancy terms applies a force along the vertical axis. This is where the temperature slab comes into play.
 
                 $$f_{buoy} = (-\kappa d + \sigma (T - T_0))\mathbf{\hat{j}}$$
 
@@ -241,7 +234,7 @@
                 <div class="pic"><img src="assets/img/buoyancy.png"></div>
             </div>
 
-            <div class="shader">
+            <div class="terms">
                 <h4 class="title">Pressure Gradient</h2>
                 <p class="details">
 
@@ -255,7 +248,7 @@
                 <div class="pic"><img src="assets/img/vorticity.png"></div>
             </div>
 
-            <div class="shader">
+            <div class="terms">
                 <h4 class="title">BOUNDARY CONDITIONS</h2>
                 <p class="details">
 
@@ -306,7 +299,7 @@
 
               <video class="tab" height="350" width="425" style="display:block; margin: 0 auto; object-fit: inherit;"
                controls>Your browser does not support the &lt;video&gt; tag.
-                <source src="lightning.mov"/>
+                <source src="shistuff/vads/lightning.mov"/>
               </video>
 
 
@@ -331,5 +324,6 @@
 
             </p>
         </div>
+      </div>
     </body>
 =</html>
