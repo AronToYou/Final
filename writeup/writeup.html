@@ -28,7 +28,7 @@
 
 <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2019</h1>
 <h1 align="middle">Final Project: Fire Simulator</h1>
-<h2 align="middle">Matthew Nicoletti, Jarod Kong, Aron Lloyd <h2>
+<h2 align="middle">Matthew Nicoletti, CS184-adn -- Jarod Kong, ... -- Aron Lloyd, ...</h2>
 
 <br><br>
 
@@ -129,16 +129,7 @@
   </h3>
 
     <p>
-      In order to better understand the algorithm, the shader and texture need to be explained first. The WebGL fragment shader colors our texture by taking a weighted sum of the neighbors' color. This allows the texture to mimic fire by having a more pronounced color on the edges while  the center becomes a lot brighter and whiter. The way the N x N texture is populated for the WebGL shader was by using a pixel N x N array. This pixel array determines whether to color a particular location on the texture depending if its value is 0 (off) or 255 (on). This means that in order to simulate our fire animation, the only thing that needs to be modified is the pixel array. 
-    </p>
-    <p>
-      The mutate step works as follows: at particular point in the pixel array, check its status. For each of its neighbors (up, down, left, right), check if they are the opposite. If so, switch the pixel to the opposite status based on a probalility determined by a set of parameters along with a small nudge of randomness. The parameters that determine the probability are <b>Ratio:</b> the main parameter in determining the probability that the pixel will switch, <b>Speed:</b> how fast the fire grows, and <b>Vertical:</b> helps the fire grow up by boosting the probability when checking the neighbor below. 
-    </p>
-    <p>
-      For all the algorithms in the probabilistic implementation, each update step works by calling the mutate function on two groups. The two groups are determined such that each location is not neighbors with any in the same group. This is because each pixel is mutated based on the value of its neighbors, so the two step update prevents previous results from affecting future ones.
-    </p>
-    <p>
-      In order to improve our fire simulation, we attempted to add smoke. This involved updating the fragment shader and the mutate step. In the fragment shader, we placed a barrier around the fire such that if a pixel were to be turned on outside of it, the color would be grey.
+
     </p>
 
     <h3>
@@ -156,21 +147,13 @@
     Results
   </h2>
     <p>
-      In order to achieve the best looking fires, we had to test several different combinations of the parameters. 
+
     </p>
 
-  <h2>
-    References
-  </h2>
-    <p>
-      
-    </p>
-  <h2>
-    Contributions
-  </h2>
-    <p>
-      
-    </p>
+    <h2>
+      References
+    </h2>
+
 
 </body>
 </html>
