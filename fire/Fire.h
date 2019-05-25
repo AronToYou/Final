@@ -134,10 +134,10 @@ public:
     void buildA();           // Constructs the coefficient matrix used to find pressure field via Conjugate Gradient
 
     // Initial Environments
-    void initCylinder(double vIn, double R);   // Disk shaped fuel injector of radius R (m) & injection speed vIn (m/s)
+    void initCylinder(double vIn, double R, double H = 2);   // Disk shaped fuel injector of radius R (m) & injection speed vIn (m/s)
 
     // Helper Functions
-    double triLerp(int x, int y, int z, double dx, double dy, double dz, vector<double> &arr, array<double, 8>* = NULL); // Tri-linear Interpolation
+    double triLerp(int x, int y, int z, double dx, double dy, double dz, vector<double> &arr, array<double, 8>* = nullptr); // Tri-linear Interpolation
 
     double norm(double x, double y, double z);        // magnitude of vector with given components
 

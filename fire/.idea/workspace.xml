@@ -12,8 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ae194f8-36c2-4a95-8761-0738c6c92527" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Deliverables/shistuff/swag/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Deliverables/shistuff/swag/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Deliverables/writeup.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Deliverables/writeup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fire.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Fire.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fire.h" beforeDir="false" afterPath="$PROJECT_DIR$/Fire.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/cmake-build-release/" />
@@ -46,8 +46,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Fire.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="560">
-              <caret line="47" column="20" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
+            <state relative-caret-position="186">
+              <caret line="438" column="33" lean-forward="true" selection-start-line="438" selection-start-column="33" selection-end-line="438" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -55,12 +55,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Fire.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="750">
-              <caret line="50" column="56" selection-start-line="50" selection-start-column="56" selection-end-line="50" selection-end-column="56" />
-              <folding>
-                <element signature="e#74#91#0" expanded="true" />
-                <element signature="e#265#293#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="462">
+              <caret line="136" column="56" selection-start-line="136" selection-start-column="56" selection-end-line="136" selection-end-column="56" />
             </state>
           </provider>
         </entry>
@@ -160,11 +156,12 @@
       <updated>1557516659214</updated>
       <workItem from="1557516667350" duration="49240000" />
       <workItem from="1557894374686" duration="351000" />
+      <workItem from="1558769294180" duration="935000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49591000" />
+    <option name="totallyTimeSpent" value="50526000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -177,8 +174,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="70" y="27" width="1296" height="741" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2536" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.2576" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -200,26 +198,26 @@
       <window_info anchor="right" id="Database" order="3" weight="0.32980332" />
     </layout>
     <layout-to-restore>
-      <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24962178" />
-      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" auto_hide="true" id="CMake" order="0" sideWeight="0.49924356" weight="0.3289689" />
-      <window_info anchor="bottom" id="Terminal" order="1" weight="0.3289689" />
-      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50075644" side_tool="true" weight="0.3289689" />
-      <window_info anchor="bottom" id="Database Changes" order="3" />
-      <window_info anchor="bottom" id="Version Control" order="4" sideWeight="0.49924356" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Messages" order="5" sideWeight="0.49924356" visible="true" weight="0.3289689" />
-      <window_info anchor="bottom" id="Message" order="6" />
-      <window_info anchor="bottom" id="Find" order="7" />
-      <window_info anchor="bottom" id="Run" order="8" />
-      <window_info anchor="bottom" id="Debug" order="9" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="12" weight="0.3289689" />
-      <window_info anchor="right" id="Database" order="0" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2576" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3289689" />
+      <window_info anchor="bottom" id="Database Changes" order="7" />
+      <window_info active="true" anchor="bottom" id="Messages" order="8" sideWeight="0.49924356" visible="true" weight="0.21440262" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3289689" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50075644" side_tool="true" weight="0.3289689" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49924356" weight="0.3289689" />
+      <window_info anchor="bottom" auto_hide="true" id="CMake" order="12" sideWeight="0.49924356" weight="0.3289689" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" weight="0.32980332" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,28 +234,24 @@
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.cpp" />
     <entry file="file://$PROJECT_DIR$/FireNew.h" />
     <entry file="file://$PROJECT_DIR$/FireNew.cpp" />
-    <entry file="file://$PROJECT_DIR$/Fire.cpp">
+    <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="47" column="20" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
+        <state relative-caret-position="75">
+          <caret line="5" column="33" selection-start-line="5" selection-start-column="33" selection-end-line="5" selection-end-column="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Fire.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="50" column="56" selection-start-line="50" selection-start-column="56" selection-end-line="50" selection-end-column="56" />
-          <folding>
-            <element signature="e#74#91#0" expanded="true" />
-            <element signature="e#265#293#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="462">
+          <caret line="136" column="56" selection-start-line="136" selection-start-column="56" selection-end-line="136" selection-end-column="56" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.cpp">
+    <entry file="file://$PROJECT_DIR$/Fire.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="33" selection-start-line="5" selection-start-column="33" selection-end-line="5" selection-end-column="33" />
+        <state relative-caret-position="186">
+          <caret line="438" column="33" lean-forward="true" selection-start-line="438" selection-start-column="33" selection-end-line="438" selection-end-column="33" />
         </state>
       </provider>
     </entry>

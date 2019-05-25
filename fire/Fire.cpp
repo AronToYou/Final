@@ -425,10 +425,9 @@ double Fire::triLerp(int x, int y, int z, double dx, double dy, double dz, vecto
               dx       * dy       * dz       * (arr[n + N*N + N + 1] + (*Cor)[7]);
 }
 
-void Fire::initCylinder(double vIn, double R) {
+void Fire::initCylinder(double vIn, double R, double H) {
     env = cylinder;
-    double numCells = pow(h/R,2); // (cells) Radius squared of injector disk
-    double H = 2; // (cells) Height of injector disk
+    double numCells = pow(R/h,2); // (cells) Radius squared of injector disk
     double r;
     envR.push_back(numCells);
     envR.push_back(H);
