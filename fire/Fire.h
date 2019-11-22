@@ -1,5 +1,5 @@
 //
-// Created by Matthew Nicoletti on 2019-05-07.
+// Created by Matthew Nicoletti & Aron Lloyd on 2019-05-07.
 //
 /*  Tasks!!!
  * Boundary Chacks -- DONE!
@@ -34,13 +34,13 @@
 #include "Eigen/Eigen/Dense"
 #include "Eigen/Eigen/IterativeLinearSolvers"
 
-using namespace Eigen;
+using namespace Eigen;  // Used for
 
 using namespace std;
 
 const double INF = numeric_limits<double>::infinity();
 
-enum environment {empty, cylinder};
+enum environment {empty, cylinder};  // Possible initial environment conditions
 
 class Fire {
 private:

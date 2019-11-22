@@ -1,5 +1,5 @@
 //
-// Created by Matthew Nicoletti on 2019-05-07.
+// Created by Matthew Nicoletti & Aron Lloyd on 2019-05-07.
 //
 
 #include "Fire.h"
@@ -87,7 +87,7 @@ void Fire::propagateFront() {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             for (int k = 0; k < N; k++) {
-                int n = i*N*N + j*N + k*N;
+                int n = i*N*N + j*N + k;
 
                 if (env == cylinder && k <= envR[1]) {
                     double r = pow(i-N/2, 2) + pow(j-N/2, 2) - envR[0];

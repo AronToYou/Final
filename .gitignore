@@ -2,3 +2,4 @@ fire/cmake-build-debug/
 fire/cmake-build-release/
 fire/.idea/
 .DS_Store
+.vs/
